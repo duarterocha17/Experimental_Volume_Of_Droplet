@@ -1,0 +1,131 @@
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2 as cv
+import math
+from flood_fill import Flood_Fill
+from file_handling import File_Handling
+
+class Volume:
+
+    def call_flood_fill(self):
+        self.ff = Flood_Fill()
+    
+    def call_file_handling(self):
+        self.fh = File_Handling()
+
+    def representation(self, main_dir, im, x, y, name_subdir):
+
+        #import File_Handling class
+        self.call_file_handling()
+
+        #represent image
+        x_grid,y_grid = np.meshgrid(x,y)
+        fig, ax = plt.subplots(figsize = (np.max(x)*2, np.max(y)*2))
+        ax.contourf(x_grid,y_grid,im, origin='lower', cmap = 'Greys')
+
+        #add labels
+        ax.set_ylabel('$R/D_0$', fontname="Helvetica", fontsize=30)
+        ax.set_yticks(range(0,round(np.max(y)),1))
+        ax.set_yticklabels(range(0,round(np.max(y)),1), fontname="Helvetica", fontsize=30)
+        ax.set_xlabel('$L/D_0$', fontname="Helvetica", fontsize=30)
+        ax.set_xticks(range(0,round(np.max(x)),1))
+        ax.set_xticklabels(range(0,round(np.max(x)),1), fontname="Helvetica", fontsize=30) 
+
+        #save image in results subdirectory
+        cur_dir = self.fh.ch_dir(str(main_dir) + '/results')
+        plt.savefig(str(name_subdir) + '.png')
+
+    #find nodes that contain fluid
+    def droplets_domain_dict(self, matrix, diameter_inlet, neighbors, conv_px_m ,factor_reduction = 1):
+        '''
+        Main method for counting islands on the map
+        '''
+        self.call_flood_fill()
+        islands = 0
+        all_droplets = {}
+        m = np.copy(np.array(matrix, np.int32))
+        filtered_matrix = np.where(m == 255)
+        while len(filtered_matrix[0])>0:
+            point = (filtered_matrix[0][0], filtered_matrix[1][0])
+            if self.ff.is_fluid(m,point):
+                self.ff.flood_fill(point, m, all_droplets, neighbors, islands)  
+                islands += 1
+            filtered_matrix = np.where(m == 255)
+        
+        #remove satellite droplets from list of droplets
+        all_droplets.pop(0)
+        for row in range(1, islands):
+            droplet_row = np.array(all_droplets[row])
+            if droplet_row.size == 0:
+                islands -= 1
+                all_droplets.pop(row)
+            else:
+                if (((np.max(droplet_row[:,0]) - np.min(droplet_row[:,0]))*conv_px_m/diameter_inlet/factor_reduction <= 2/3) or 
+                ((np.max(droplet_row[:,1]) - np.min(droplet_row[:,1]))*conv_px_m/diameter_inlet/factor_reduction <= 1/3)):
+                    islands -= 1
+                    all_droplets.pop(row)
+
+        return(islands, all_droplets)  
+
+    def volume(self, im, conv_px_m, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, factor_reduction = 1):
+
+        self.call_flood_fill()
+
+        neighbors = self.ff.neighbors_dict(im)
+            
+        islands, all_droplets = self.droplets_domain_dict(im, diameter_inlet, neighbors, conv_px_m, factor_reduction)
+        
+        first_detached_droplet = np.array(all_droplets[list(all_droplets.keys())[0]])
+        volume_single_droplet = 0
+        for x_value in np.unique(first_detached_droplet[:,1]):
+
+            #surface area
+            mask = (first_detached_droplet[:, 1] == x_value)
+            y_list = first_detached_droplet[mask, :][:,0]
+            y_radius = (np.max(y_list)-np.min(y_list))*conv_px_m/factor_reduction
+            dx = conv_px_m/factor_reduction
+            volume_single_droplet += dx*(y_radius**2*math.pi)
+        volume_single_droplet = round(volume_single_droplet/(4/3*math.pi*(diameter_inlet/2)**3),2)
+
+        return(islands, volume_single_droplet)   
+
+    
+    def loop_through_dir(self, main_dir, external_diameter_inlet = 0.0012, diameter_inlet = 0.001):
+
+        self.call_file_handling()
+        self.call_flood_fill()
+
+        #guarantee that you are in the correct directory
+        cur_dir = self.fh.ch_dir(main_dir)
+        if not os.path.isdir('results'): 
+            os.mkdir('results')
+        #get path to all subdirectories in main directory, excluding calibration
+        sub_dir_names = self.fh.list_sub_dir(main_dir)
+        dict_images = self.fh.dic_im(main_dir)
+
+        #values from calibration
+        y_origin, x_origin, conv_px_m, calibration_im = self.fh.calibration(main_dir, external_diameter_inlet)
+
+        for dir in sub_dir_names:
+            if os.path.exists('results/volume/' + str(dir) + '.txt'):
+                os.remove('results/volume/' + str(dir) + '.txt')
+            volume_drops = []
+            for path in dict_images[dir]:
+                im = cv.imread(path,0)
+                im = self.fh.clean_bin_image(im)[y_origin:,x_origin:] #filter image from origin to end
+                im, factor_reduction = self.ff.reduce_size(im,1)
+                x = np.array(range(len(im[0])))*conv_px_m/diameter_inlet/factor_reduction
+                y = np.array(range(len(im)))*conv_px_m/diameter_inlet/factor_reduction
+                self.representation(main_dir, im, x, y, dir)
+                islands, volume_drop = self.volume(im, conv_px_m, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, factor_reduction = 1)
+                volume_drops.append(volume_drop)
+                file_object = open('results/volume/' + str(dir) + '.txt', 'a')
+                file_object.write('V/V0 = ' + str(volume_drop) + '\n')
+                file_object.close()
+            avg_volume = round(np.mean(volume_drops),2)
+            file_object = open('results/volume/' + str(dir) + '.txt', 'a')
+            file_object.write('The average V/V0 = ' + str(avg_volume) + '\n')
+            file_object.close()
+            
+            
