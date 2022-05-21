@@ -108,8 +108,8 @@ class Volume:
         y_origin, x_origin, conv_px_m, calibration_im = self.fh.calibration(main_dir, external_diameter_inlet)
 
         for dir in sub_dir_names:
-            if os.path.exists('results/volume/' + str(dir) + '.txt'):
-                os.remove('results/volume/' + str(dir) + '.txt')
+            if os.path.exists(os.path.join(cur_dir,'results/' + str(dir) + '.txt')):
+                os.remove(os.path.join(cur_dir,'results/' + str(dir) + '.txt'))
             volume_drops = []
             for path in dict_images[dir]:
                 im = cv.imread(path,0)
@@ -120,11 +120,11 @@ class Volume:
                 self.representation(main_dir, im, x, y, dir)
                 islands, volume_drop = self.volume(im, conv_px_m, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, factor_reduction = 1)
                 volume_drops.append(volume_drop)
-                file_object = open('results/volume/' + str(dir) + '.txt', 'a')
+                file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'w+')
                 file_object.write('V/V0 = ' + str(volume_drop) + '\n')
                 file_object.close()
             avg_volume = round(np.mean(volume_drops),2)
-            file_object = open('results/volume/' + str(dir) + '.txt', 'a')
+            file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'w+')
             file_object.write('The average V/V0 = ' + str(avg_volume) + '\n')
             file_object.close()
             
