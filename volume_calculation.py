@@ -157,13 +157,13 @@ class Volume:
                 im, factor_reduction = self.ff.reduce_size(im,1)
                 x = np.array(range(len(im[0])))*conv_px_m/diameter_inlet/factor_reduction
                 y = np.array(range(len(im)))*conv_px_m/diameter_inlet/factor_reduction
-                self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")-1])
+                self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")])
                 islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = 0.001, factor_reduction = 1)
                 volume_drops.append(volume_drop)
 
                 #save results in txt file
                 file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'a')
-                file_object.write('V/V0 = ' + str(volume_drop) + ', measured in between z = ' + str(z_min) + ' and ' + 'z = ' + str(z_max) + '.\n')
+                file_object.write('(' + str(path[path.rfind("/")+1:path.rfind(".")]) + ') V/V0 = ' + str(volume_drop) + ', measured in between z = ' + str(z_min) + ' and ' + 'z = ' + str(z_max) + '.\n')
                 file_object.close()
 
             #save average results in txt file
