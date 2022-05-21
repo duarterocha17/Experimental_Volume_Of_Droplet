@@ -39,8 +39,9 @@ class Volume:
         ax.set_xticklabels(range(0,round(np.max(x)),1), fontname="Helvetica", fontsize=30) 
 
         #save image in results subdirectory
-        cur_dir = self.fh.ch_dir(str(main_dir) + '/results')
-        plt.savefig(str(name_subdir) + '.png')
+        print(str(name_subdir))
+        fig.savefig(os.path.join(main_dir, 'results/' + str(name_subdir)),bbox_inches='tight', dpi=150)
+        plt.close('all')
 
 
     def droplets_domain_dict(self, matrix, diameter_inlet, neighbors, conv_px_m ,factor_reduction = 1):
@@ -111,8 +112,8 @@ class Volume:
         volume_single_droplet = round(volume_single_droplet/(4/3*math.pi*(diameter_inlet/2)**3),2)
 
         #show x domain of the droplet
-        x_min = np.min(first_detached_droplet[:,1])
-        x_max = np.max(first_detached_droplet[:,1])
+        x_min = round(np.min(first_detached_droplet[:,1])*conv_px_m/factor_reduction/diameter_inlet,2)
+        x_max = round(np.max(first_detached_droplet[:,1])*conv_px_m/factor_reduction/diameter_inlet,2)
 
         return(islands, volume_single_droplet, x_min, x_max)   
 
@@ -150,23 +151,25 @@ class Volume:
             volume_drops = []
             for path in dict_images[dir]:
                 im = cv.imread(path,0)
-                im = self.fh.clean_bin_image(im)[y_origin:,x_origin:] #filter image from origin to end
+                im = self.fh.clean_bin_image(im) 
+                y_origin = self.fh.double_calibration(im) #readjust y origin
+                im = im[y_origin:,:]
                 im, factor_reduction = self.ff.reduce_size(im,1)
                 x = np.array(range(len(im[0])))*conv_px_m/diameter_inlet/factor_reduction
                 y = np.array(range(len(im)))*conv_px_m/diameter_inlet/factor_reduction
-                self.representation(main_dir, im, x, y, dir)
-                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, factor_reduction = 1)
+                self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")-1])
+                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = 0.001, factor_reduction = 1)
                 volume_drops.append(volume_drop)
 
                 #save results in txt file
-                file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'w+')
+                file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'a')
                 file_object.write('V/V0 = ' + str(volume_drop) + ', measured in between z = ' + str(z_min) + ' and ' + 'z = ' + str(z_max) + '.\n')
                 file_object.close()
 
             #save average results in txt file
             avg_volume = round(np.mean(volume_drops),2)
-            file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'w+')
-            file_object.write('\n\n' + 'The average V/V0 = ' + str(avg_volume))
+            file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'a')
+            file_object.write('\n' + 'The average V/V0 = ' + str(avg_volume))
             file_object.close()
             
             

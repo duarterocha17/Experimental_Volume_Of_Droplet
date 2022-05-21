@@ -21,7 +21,7 @@ class File_Handling:
         sub_dir = [filename for filename in os.listdir('.') if (not filename.startswith(".")) and (not filename.startswith("calibration")) and (not filename.startswith("results")) and (os.path.isdir(filename))]
         return(sub_dir)
 
-    def clean_bin_image(self, image, lower_threshold = 50, upper_threshold = 255, flip = True):
+    def clean_bin_image(self, image, lower_threshold = 20, upper_threshold = 255, flip = True):
         '''
         Analyse images in binary and eliminate unwanted reflections.
         '''
@@ -60,7 +60,7 @@ class File_Handling:
         calibration_im = self.clean_bin_image(calibration_im)
 
         #set new origin
-        y_aux = np.where(calibration_im[:,0] == 255)[0]
+        y_aux = np.where(calibration_im[:,10] == 255)[0]
         y_origin = round((np.max(y_aux)-np.min(y_aux))/2+np.min(y_aux))
         x_aux = np.where(calibration_im[y_origin,:] == 255)[0]
         x_origin = round(np.max(x_aux)-np.min(x_aux))
@@ -73,6 +73,14 @@ class File_Handling:
         calibration_im = calibration_im[y_origin:,x_origin:]
 
         return(y_origin, x_origin, conv_px_m, calibration_im)
+    
+    def double_calibration(self, im):
+        
+        #set y origin again in case position was slightly altered
+        y_aux = np.where(im[:,10] == 255)[0]
+        y_origin = round((np.max(y_aux)-np.min(y_aux))/2+np.min(y_aux))
+        
+        return(y_origin)
 
     def dic_im(self, main_dir):
         '''
