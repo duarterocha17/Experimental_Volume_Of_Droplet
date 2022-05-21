@@ -1,0 +1,4 @@
+V/V0 = 45.07, measured in between z = 2.72 and z = 6.52.
+V/V0 = 45.11, measured in between z = 2.78 and z = 6.52.
+
+The average V/V0 = 45.09
