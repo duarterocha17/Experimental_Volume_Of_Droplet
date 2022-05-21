@@ -110,7 +110,11 @@ class Volume:
         #get volume as dimensionless variable
         volume_single_droplet = round(volume_single_droplet/(4/3*math.pi*(diameter_inlet/2)**3),2)
 
-        return(islands, volume_single_droplet)   
+        #show x domain of the droplet
+        x_min = np.min(first_detached_droplet[:,1])
+        x_max = np.max(first_detached_droplet[:,1])
+
+        return(islands, volume_single_droplet, x_min, x_max)   
 
     
     def loop_through_dir(self, main_dir, external_diameter_inlet = 0.0012, diameter_inlet = 0.001):
@@ -151,12 +155,12 @@ class Volume:
                 x = np.array(range(len(im[0])))*conv_px_m/diameter_inlet/factor_reduction
                 y = np.array(range(len(im)))*conv_px_m/diameter_inlet/factor_reduction
                 self.representation(main_dir, im, x, y, dir)
-                islands, volume_drop = self.volume(im, conv_px_m, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, factor_reduction = 1)
+                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, factor_reduction = 1)
                 volume_drops.append(volume_drop)
 
                 #save results in txt file
                 file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'w+')
-                file_object.write('V/V0 = ' + str(volume_drop) + '\n')
+                file_object.write('V/V0 = ' + str(volume_drop) + ', measured in between z = ' + str(z_min) + ' and ' + 'z = ' + str(z_max) + '.\n')
                 file_object.close()
 
             #save average results in txt file
