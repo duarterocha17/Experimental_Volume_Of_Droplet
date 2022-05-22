@@ -118,7 +118,7 @@ class Volume:
         return(islands, volume_single_droplet, x_min, x_max)   
 
     
-    def loop_through_dir(self, main_dir, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, extension = ".tif", lower_threshold = 20):
+    def loop_through_dir(self, main_dir, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, extension = ".tif", lower_threshold = 20,  factor_reduction = 1):
 
         '''
         Loop volume and representation function through files in directory
@@ -161,7 +161,7 @@ class Volume:
                     self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")]) #mac/linux version
                 else:
                     self.representation(main_dir, im, x, y, path[path.rfind("\\")+1:path.rfind(".")]) #windows version
-                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = 0.001, factor_reduction = 1)
+                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = 0.001, factor_reduction)
                 volume_drops.append(volume_drop)
 
                 #save results in txt file
