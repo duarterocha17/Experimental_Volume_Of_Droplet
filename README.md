@@ -2,9 +2,9 @@
 
 ### About the project
 
-The project was developed for a personal application, but it might be useful for fellow researchers. It is supposed to analyse and calculate the volume of the resulting droplets on a dripping or jetting nozzle, from the images taken in an experimental setup. 
+The project was developed for a specific application in the project *RheoOptimized2Dinks*, but it might be useful for fellow researchers. It is supposed to analyse and calculate the volume of the resulting droplets on a dripping or jetting nozzle, from the images taken in an experimental setup. 
 
-The image below shows the output plotting of a detached droplet, as a function of the internal inlet diameter. It is also shown the droplet's volume, as a function of the volume of a sphere with the internal inlet diameter.
+The image below shows the output plotting of a detached droplet as a function of the internal inlet diameter. It is also shown the droplet's volume, as a function of the volume of a sphere with the internal inlet diameter.
 
 ![image](https://github.com/duarterocha17/Experimental_Volume_Of_Droplet/blob/main/water/Water_nozzleCirc/results/10uls_6400fps_b_C001H001S0001000195.png?raw=true)
 
@@ -64,4 +64,4 @@ Its results are stored in the `results` folder in each one of these main directo
 
 This is the 1st version of this script. It was only tested for a small set of data, so any correction or suggestion is much appreciated!
 
-
+Additionally, the author would like to thank the *Transport Phenomena Research Center* of the *Faculty of Engineering of the University of Porto* for the inclusion on the project *RheoOptimized2Dinks* and for allowing an opportunity to develop this script.
