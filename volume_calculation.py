@@ -161,7 +161,7 @@ class Volume:
                     self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")]) #mac/linux version
                 else:
                     self.representation(main_dir, im, x, y, path[path.rfind("\\")+1:path.rfind(".")]) #windows version
-                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = 0.001, factor_reduction)
+                islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = diameter_inlet, factor_reduction = factor_reduction)
                 volume_drops.append(volume_drop)
 
                 #save results in txt file
