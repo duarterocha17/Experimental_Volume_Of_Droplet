@@ -31,11 +31,24 @@ This project was developed for a specific application and it was not tested for 
 
 * In addiction, the images are 'cleaned' by first setting it to binary, which lower threshold can also be adjust by inputing an `lower_threshold` parameter, for example, `lower_threshold = 50`, on the `Volume.loop_through_dir()` method. If the image is too dark, the threshold should be lower and the opposite way around. 
 
+* It uses the `numpy`, `matplotlib.pyplot` and `cv2` packages, which are assumed to be installed.
+
 ---
 
 ### How to use
 
-For staters, 
+To use this script, you simply need to insert the path to the main directory of your images in `main.py`.
+
+```Python
+from volume_calculation import Volume
+
+im= Volume() #import Volume() class
+
+main_directory = "insert directory path here" #path to main directory
+im.loop_through_dir(main_directory, external_diameter_inlet = 0.0012,  diameter_inlet = 0.001, extension=".tif", lower_threshold=20) #adjust parameters accoding to your application
+```
+
+---
 
 ### Examples
 
