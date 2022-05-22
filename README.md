@@ -64,4 +64,4 @@ Its results are stored in the `results` folder in each one of these main directo
 
 This is the 1st version of this script. It was only tested for a small set of data, so any correction or suggestion is much appreciated!
 
-Additionally, the author would like to thank the *Transport Phenomena Research Center* of the *Faculty of Engineering of the University of Porto* for the inclusion on the project *RheoOptimized2Dinks* and for allowing an opportunity to develop this script.
+Additionally, the author would like to thank the *Transport Phenomena Research Center* of the *Faculty of Engineering of the University of Porto* for the inclusion on the project *RheoOptimized2Dinks* and for giving an opportunity to develop this script.
