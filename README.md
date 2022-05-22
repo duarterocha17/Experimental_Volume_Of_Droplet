@@ -54,7 +54,7 @@ After calculation, the results will be stored in a created folder named `results
 
 ### Examples
 
-`main.py` is adjusted to run on a loop for 4 different cases, corresponing to the 4 main directories `Water_nozzleCirc`, `Water_nozzleQuad`, `Water_nozzleTri` and `Water_nozzleCurv` (inside `water` folder), which have images associated to measurements on a circular, a square, a triangular and a curvilinear tringle nozzles, each with several flow rates measurements. 
+`main.py` is adjusted to run on a loop for 4 different cases, corresponding to the 4 main directories `Water_nozzleCirc`, `Water_nozzleQuad`, `Water_nozzleTri` and `Water_nozzleCurv` (inside `water` folder), which have images associated to measurements on a circular, a square, a triangular and a curvilinear tringle nozzles, each with several flow rates measurements. 
 
 Its results are stored in the `results` folder in each one of these main directories, which can be seen in this repository.
 
