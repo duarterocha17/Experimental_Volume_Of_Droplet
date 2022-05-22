@@ -10,4 +10,4 @@ main_directories_names = ['Water_nozzleCirc', 'Water_nozzleQuad', 'Water_nozzleT
 
 for item in range(len(external_diameters)):
     main_directory_path = os.path.join(home_directory_name,main_directories_names[item])
-    aux = im.loop_through_dir(main_directory_path, external_diameter_inlet = external_diameters[item])
+    aux = im.loop_through_dir(main_directory_path, external_diameter_inlet = external_diameters[item], extension=".tif", lower_threshold=20)

@@ -1,3 +1,4 @@
+from distutils import extension
 import os
 import matplotlib.pyplot as plt
 import numpy as np
@@ -118,7 +119,7 @@ class Volume:
         return(islands, volume_single_droplet, x_min, x_max)   
 
     
-    def loop_through_dir(self, main_dir, external_diameter_inlet = 0.0012, diameter_inlet = 0.001):
+    def loop_through_dir(self, main_dir, external_diameter_inlet = 0.0012, diameter_inlet = 0.001, extension = ".tif", lower_threshold = 20):
 
         '''
         Loop volume and representation function through files in directory
@@ -137,7 +138,7 @@ class Volume:
 
         #get path to all subdirectories in main directory, excluding calibration
         sub_dir_names = self.fh.list_sub_dir(main_dir)
-        dict_images = self.fh.dic_im(main_dir)
+        dict_images = self.fh.dic_im(main_dir, extension)
 
         #values from calibration
         y_origin, x_origin, conv_px_m, calibration_im = self.fh.calibration(main_dir, external_diameter_inlet)
@@ -151,7 +152,7 @@ class Volume:
             volume_drops = []
             for path in dict_images[dir]:
                 im = cv.imread(path,0)
-                im = self.fh.clean_bin_image(im) 
+                im = self.fh.clean_bin_image(im, lower_threshold) 
                 y_origin = self.fh.double_calibration(im) #readjust y origin
                 im = im[y_origin:,:]
                 im, factor_reduction = self.ff.reduce_size(im,1)

@@ -82,7 +82,7 @@ class File_Handling:
         
         return(y_origin)
 
-    def dic_im(self, main_dir):
+    def dic_im(self, main_dir, extension = ".tif"):
         '''
         Create a dicionary with sub directories and absolute paths to images within.
         '''
@@ -98,7 +98,7 @@ class File_Handling:
             path = os.path.join(cur_dir, sub_dir)
             path_im = []
             for file in os.listdir(path):
-                if file.endswith(".tif"):
+                if file.endswith(extension):
                     path_im.append(os.path.join(path, file))
             dict[sub_dir] = path_im
         
