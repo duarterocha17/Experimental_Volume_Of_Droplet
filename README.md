@@ -58,6 +58,8 @@ After calculation, the results will be stored in a created folder named `results
 
 Its results are stored in the `results` folder in each one of these main directories, which can be seen in this repository.
 
+---
+
 ### Note
 
 This is the 1st version of this script. It was only tested for a small set of data, so any correction or suggestion is much appreciated!
