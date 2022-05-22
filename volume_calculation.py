@@ -144,8 +144,8 @@ class Volume:
 
         #for each directory with images
         for dir in sub_dir_names:
-            if os.path.exists(os.path.join(cur_dir,'results/' + str(dir) + '.txt')):
-                os.remove(os.path.join(cur_dir,'results/' + str(dir) + '.txt'))
+            if os.path.exists(os.path.join(cur_dir, os.path.join('results', str(dir) + '.txt'))):
+                os.remove(os.path.join(cur_dir, os.path.join('results', str(dir) + '.txt')))
 
             #read each image in each subdirectory
             volume_drops = []
@@ -157,18 +157,21 @@ class Volume:
                 im, factor_reduction = self.ff.reduce_size(im,1)
                 x = np.array(range(len(im[0])))*conv_px_m/diameter_inlet/factor_reduction
                 y = np.array(range(len(im)))*conv_px_m/diameter_inlet/factor_reduction
-                self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")])
+                if path.rfind("/") > path.rfind("\\"):
+                    self.representation(main_dir, im, x, y, path[path.rfind("/")+1:path.rfind(".")]) #mac/linux version
+                else:
+                    self.representation(main_dir, im, x, y, path[path.rfind("\\")+1:path.rfind(".")]) #windows version
                 islands, volume_drop, z_min, z_max = self.volume(im, conv_px_m, diameter_inlet = 0.001, factor_reduction = 1)
                 volume_drops.append(volume_drop)
 
                 #save results in txt file
-                file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'a')
+                file_object = open(os.path.join(cur_dir,os.path.join('results', str(dir) + '.txt')), 'a')
                 file_object.write('(' + str(path[path.rfind("/")+1:path.rfind(".")]) + ') V/V0 = ' + str(volume_drop) + ', measured in between z = ' + str(z_min) + ' and ' + 'z = ' + str(z_max) + '.\n')
                 file_object.close()
 
             #save average results in txt file
             avg_volume = round(np.mean(volume_drops),2)
-            file_object = open(os.path.join(cur_dir,'results/' + str(dir) + '.txt'), 'a')
+            file_object = open(os.path.join(cur_dir, os.path.join('results', str(dir) + '.txt')), 'a')
             file_object.write('\n' + 'The average V/V0 = ' + str(avg_volume))
             file_object.close()
             
