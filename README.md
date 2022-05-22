@@ -48,9 +48,14 @@ main_directory = "insert directory path here" #path to main directory
 im.loop_through_dir(main_directory, external_diameter_inlet = 0.0012,  diameter_inlet = 0.001, extension=".tif", lower_threshold=20) #adjust parameters accoding to your application
 ```
 
+After calculation, the results will be stored in a created folder named `results`, within the main directory.
+
 ---
 
 ### Examples
 
+`main.py` is adjusted to run on a loop for 4 different cases, associated with the 4 main directories `Water_nozzleCirc`, `Water_nozzleQuad`, `Water_nozzleTri` and `Water_nozzleCurv`, which have images associated to measurements on a circular, a square, a triangular and a curvilinear tringle nozzles, each with several flow rates measurements.
 
-###### Assumed images are .tif 
+Its results are stored in the `results` folder in each one of these main directories.
+
+
