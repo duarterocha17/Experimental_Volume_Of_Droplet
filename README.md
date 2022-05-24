@@ -64,4 +64,5 @@ Its results are stored in the `results` folder in each one of these main directo
 
 This is the 1st version of this script. It has only been tested for a small set of data, so any correction or suggestion is much appreciated!
 
-Additionally, the author would like to thank the [*Transport Phenomena Research Center*](https://ceft.fe.up.pt/) of the [*Faculty of Engineering of the University of Porto*](https://sigarra.up.pt/feup/pt/web_page.inicial) for the inclusion on the project [*RheoOptimized2Dinks*](https://www.researchgate.net/project/Rheologically-optimized-2D-material-based-inks-RheoOptimized2Dinks) and for giving an opportunity to develop this script.
+######This work was financially supported by UIDP/00532/2020 (CEFT), funded by national funds through FCT/MCTES (PIDDAC); the developed
+research is within the project’s scope PTDC/EME-APL/30765/2017-POCI-01-0145-FEDER-030765 (RheoOptimized2Dinks).
