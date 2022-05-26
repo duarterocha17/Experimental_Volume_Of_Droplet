@@ -4,7 +4,7 @@ from volume_calculation import Volume
 im= Volume()
 
 #CHANGE NAME OF home_directory_name TO FOLDER WITH MAIN DIRECTORIES
-home_directory_name = '/Users/duarterocha17/Desktop/Experimental_Volume_Of_Droplet/water' #directory containing 4 cases (4 main directories)
+home_directory_name = '/Volumes/Duarte/Master Thesis/Experiments/Experimental_Volume_Of_Droplet/water' #directory containing 4 cases (4 main directories)
 external_diameters = [0.0012, 0.0014, 0.00176, 0.00276] #external diameters for each case
 main_directories_names = ['Water_nozzleCirc', 'Water_nozzleQuad', 'Water_nozzleTri', 'Water_nozzleCurv'] #names of main directories
 

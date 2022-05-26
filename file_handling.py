@@ -60,9 +60,9 @@ class File_Handling:
         calibration_im = self.clean_bin_image(calibration_im)
 
         #set new origin
-        y_aux = np.where(calibration_im[:,0:10] == 255)[0]
+        y_aux = np.argwhere(calibration_im == 255)[:,0]
         y_origin = round((np.mean(y_aux)))
-        x_aux = np.where(calibration_im[y_origin,:] == 255)[0]
+        x_aux = np.argwhere(calibration_im[y_origin,:] == 255)
         x_origin = round(np.max(x_aux)-np.min(x_aux))
 
         #convert pixels to meters
@@ -77,8 +77,8 @@ class File_Handling:
     def double_calibration(self, im):
         
         #set y origin again in case position was slightly altered
-        y_aux = np.argwhere(im == 255)
-        y_origin = round(np.mean(y_aux[:,1]))
+        y_aux = np.argwhere(im == 255)[:,0]
+        y_origin = round(np.mean(y_aux))
         
         return(y_origin)
 
