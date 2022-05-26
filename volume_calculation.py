@@ -66,7 +66,7 @@ class Volume:
             filtered_matrix = np.where(m == 255)
         
         #remove satellite droplets from list of droplets
-        all_droplets.pop(0)
+
         for row in range(1, islands):
             droplet_row = np.array(all_droplets[row])
 
@@ -96,8 +96,13 @@ class Volume:
         #get domain of first detached droplet
         neighbors = self.ff.neighbors_dict(im)
         islands, all_droplets = self.droplets_domain_dict(im, diameter_inlet, neighbors, conv_px_m, factor_reduction)
-        first_detached_droplet = np.array(all_droplets[list(all_droplets.keys())[0]])
         
+        #if there is only one droplet/jet, consider island 0 
+        if len(all_droplets.keys()) > 1:
+            first_detached_droplet = np.array(all_droplets[list(all_droplets.keys())[1]])
+        else:
+            first_detached_droplet = np.array(all_droplets[list(all_droplets.keys())[0]])
+
         #integrate for droplet's length 
         volume_single_droplet = 0
 
