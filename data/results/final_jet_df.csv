@@ -1,0 +1,5 @@
+,fluid,nozzle,wet_dry,flow_rate,initial_jet_width,jet_width_after_1Dlength
+0,glycerol,Quad,Wet,197,1.658,1.558
+0,glycerol,Tri,Dry,197,1.842,1.727
+0,glycerol,Tri,Wet,197,1.966,1.809
+0,glycerol,Quad,Dry,160,1.35,1.235

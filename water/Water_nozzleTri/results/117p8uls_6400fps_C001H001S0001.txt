@@ -1,5 +1,0 @@
-(117p8uls_6400fps_a_c_C001H001S0001000044) V/V0 = 37.59, measured in between z = 2.52 and z = 6.24.
-(117p8uls_6400fps_a_c_C001H001S0001001755) V/V0 = 50.68, measured in between z = 2.61 and z = 6.87.
-(117p8uls_6400fps_a_c_C001H001S0001003442) V/V0 = 50.6, measured in between z = 2.68 and z = 6.8.
-
-The average V/V0 = 46.29

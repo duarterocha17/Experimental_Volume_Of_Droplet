@@ -1,4 +1,0 @@
-(10uls_6400fps_b_C001H001S0001000195) V/V0 = 42.47, measured in between z = 2.72 and z = 6.52.
-(10uls_6400fps_c_C001H001S0001000332) V/V0 = 42.52, measured in between z = 2.78 and z = 6.52.
-
-The average V/V0 = 42.5
