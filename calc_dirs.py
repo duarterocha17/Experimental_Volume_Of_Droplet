@@ -221,34 +221,28 @@ class Calculation:
             path_fluids = os.path.join(main_dir, fluid)
             dict_fluids = dict_files[fluid]
             df_droplets, df_jet = self.calc_fluid_dir(path_fluids, dict_fluids, dict_external_diameters, diameter_inlet = 0.001, factor_reduction = 1, lower_threshold = 20, upper_threshold = 255)
-            droplet_data, jet_data = [],[]
+            droplet_data = []
 
             #add column with fluid
             for item_0 in range(len(df_droplets)):
                 droplet_data.append(fluid)
             df_droplets.insert(0,'fluid', droplet_data)
-            for item_1 in range(len(df_jet)):
-                jet_data.append(fluid)
-            df_jet.insert(0,'fluid', jet_data)
 
             final_droplet_df = final_droplet_df.append(df_droplets)
-            final_jet_df = final_jet_df.append(df_jet)
         
         results_dir = os.path.join(main_dir, 'results')
         final_droplet_df.to_csv(os.path.join(results_dir, 'final_droplet_df.csv'))
-        final_jet_df.to_csv(os.path.join(results_dir, 'final_jet_df.csv'))
 
-        return final_droplet_df, final_jet_df
+        return final_droplet_df
 
 
 
 calc = Calculation()
 file_handle = File_Handling()
-main_dir = '/Volumes/Duarte/Master Thesis/Experiments/Experimental_Volume_Of_Droplet/data'
+main_dir = '/Users/duarterocha17/Desktop/Experimental_Volume_Of_Droplet/data'
 external_diameters = {'Circ': 0.0012, 'Quad': 0.0014, 'Tri': 0.00176, 'Curv': 0.00276}
-df_droplets, df_jet = calc.calc_data_dir(main_dir, external_diameters)
+df_droplets = calc.calc_data_dir(main_dir, external_diameters)
 print(df_droplets)
-print(df_jet)
 
 
 
